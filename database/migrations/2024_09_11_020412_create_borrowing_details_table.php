@@ -1,0 +1,32 @@
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration
+{
+    /**
+     * Run the migrations.
+     */
+    public function up(): void
+    {
+        Schema::create('borrowing_detail', function (Blueprint $table) {
+            $table->id();
+            $table->unsignedBigInteger('borrowing_id'); // Referensi ke tabel borrowings
+            $table->unsignedBigInteger('book_id'); // Referensi ke tabel books
+            $table->timestamps();
+    
+            $table->foreign('borrowing_id')->references('id')->on('borrowing')->onDelete('cascade');
+            $table->foreign('book_id')->references('id')->on('book')->onDelete('cascade');
+        });
+    }
+
+    /**
+     * Reverse the migrations.
+     */
+    public function down(): void
+    {
+        Schema::dropIfExists('borrowing_detail');
+    }
+};
