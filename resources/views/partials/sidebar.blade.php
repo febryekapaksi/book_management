@@ -1,23 +1,23 @@
 <aside id="sidebar" class="sidebar">
     <ul class="sidebar-nav" id="sidebar-nav">
 
-        {{-- <li class="nav-item">
-          <a class="nav-link " href="index.html">
+        <li class="nav-item">
+          <a class="nav-link {{ Request::is('dashboard*') ? '' : 'collapsed' }}" href="{{ route('dashboard')}}">
             <i class="bi bi-grid"></i>
             <span>Dashboard</span>
           </a>
-        </li> --}}
+        </li>
 
   
         <li class="nav-item">
-          <a class="nav-link {{ Request::is('books*') ? '' : 'collapsed' }}" href="{{ route('books.index')}}" href="{{ route('books.index')}}">
+          <a class="nav-link {{ Request::is('books*') ? '' : 'collapsed' }}" href="{{ route('books.index')}}">
             <i class="bi bi-journal-text"></i>
             <span>Books</span>
           </a>
         </li>
   
         <li class="nav-item">
-          <a class="nav-link {{ Request::is('borrowings*') ? '' : 'collapsed' }}" href="{{ route('borrowings.index')}}" href="{{ route('borrowings.index')}}">
+          <a class="nav-link {{ Request::is('borrowings*') ? '' : 'collapsed' }}" href="{{ route('borrowings.index')}}">
             <i class="bi bi-list"></i>
             <span>Borrowings</span>
           </a>
