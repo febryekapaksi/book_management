@@ -16,7 +16,7 @@
 
 <section class="section">
     <div class="row">
-        <div class="col-lg-8">
+        <div class="col-lg-12">
             <div class="card">
                 <div class="card-body">
                     <h5 class="card-title">{{ isset($borrowing) ? 'Edit Book' : 'Add New Book' }}</h5>
@@ -53,7 +53,7 @@
                                     @foreach($books as $book)
                                         <option value="{{ $book->id }}" 
                                             {{ isset($borrowing) && $borrowing->books->contains($book->id) ? 'selected' : '' }}>
-                                            {{ $book->title }}
+                                            {{ $book->title }} - Stock {{$book->stock}}
                                         </option>
                                     @endforeach
                                 </select>

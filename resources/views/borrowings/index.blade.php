@@ -55,8 +55,10 @@
                                     @endif
                                 </td>
                                 <td>
-                                    <a href="{{ route('borrowings.edit', $borrowing->id) }}" class="btn btn-warning btn-sm">Edit</a>
-                                    <button class="btn btn-danger btn-sm" onclick="confirmationDialog('delete-form-{{ $borrowing->id }}', 'Are you sure?', 'This book will be permanently deleted!', 'Yes, delete it!')">Delete</button>
+                                    @if(is_null($borrowing->return_date))
+                                    <a href="{{ route('borrowings.edit', $borrowing->id) }}" class="btn btn-warning btn-sm" title="Edit"><i class="bi bi-pencil-square"></i></a>
+                                    @endif
+                                    <button class="btn btn-danger btn-sm" title="Delete" onclick="confirmationDialog('delete-form-{{ $borrowing->id }}', 'Are you sure?', 'This book will be permanently deleted!', 'Yes, delete it!')"><i class="bi bi-trash"></i></button>
 
                                     <form id="delete-form-{{ $borrowing->id }}" action="{{ route('borrowings.destroy', $borrowing->id) }}" method="POST" style="display: none;">
                                         @csrf

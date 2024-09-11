@@ -16,7 +16,7 @@
 
 <section class="section">
     <div class="row">
-        <div class="col-lg-8">
+        <div class="col-lg-12">
             <div class="card">
                 <div class="card-body">
                     <h5 class="card-title">{{ isset($book) ? 'Edit Book' : 'Add New Book' }}</h5>
@@ -66,7 +66,14 @@
                         </div>
 
                         <div class="row mb-3">
-                            <label for="image" class="col-md-4 col-form-label">Book Cover Image</label>
+                            <label for="publisher" class="col-md-4 col-form-label">Stock</label>
+                            <div class="col-md-8">
+                                <input type="number" class="form-control" id="stock" name="stock" value="{{ isset($book) ? $book->stock : old('stock') }}" required>
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <label for="image" class="col-md-4 col-form-label">Image</label>
                             <div class="col-md-8">
                                 <input type="file" class="form-control" id="image" name="image">
                             </div>

@@ -25,6 +25,7 @@ class BookController extends Controller
             'author' => 'required',
             'publisher' => 'required',
             'published_date' => 'required|date',
+            'stock' => 'required|integer',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048', 
         ]);
 
@@ -62,10 +63,11 @@ class BookController extends Controller
     public function update(Request $request, Book $book)
     {
         $request->validate([
-            'title' => 'required',
-            'author' => 'required',
-            'publisher' => 'required',
+            'title' => 'required|string|max:50',
+            'author' => 'required|string|max:50',
+            'publisher' => 'required|string|max:50',
             'published_date' => 'required|date',
+            'stock' => 'required|integer',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048', 
         ]);
 

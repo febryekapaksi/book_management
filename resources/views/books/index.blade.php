@@ -32,6 +32,7 @@
                                 <th scope="col">Author</th>
                                 <th scope="col">Publisher</th>
                                 <th scope="col">Published Date</th>
+                                <th scope="col">Stock</th>
                                 <th scope="col">Actions</th>
                             </tr>
                         </thead>
@@ -50,9 +51,10 @@
                                 <td>{{ $book->author }}</td>
                                 <td>{{ $book->publisher }}</td>
                                 <td>{{ date('d F Y', strtotime($book->published_date)) }}</td>
+                                <td>{{ $book->stock }}</td>
                                 <td>
-                                    <a href="{{ route('books.edit', $book->id) }}" class="btn btn-warning btn-sm">Edit</a>
-                                    <button class="btn btn-danger btn-sm" onclick="confirmationDialog('delete-form-{{ $book->id }}', 'Are you sure?', 'This book will be permanently deleted!', 'Yes, delete it!')">Delete</button>
+                                    <a href="{{ route('books.edit', $book->id) }}" class="btn btn-warning btn-sm" title="Edit"><i class="bi bi-pencil-square"></i></a>
+                                    <button class="btn btn-danger btn-sm" title="Delete" onclick="confirmationDialog('delete-form-{{ $book->id }}', 'Are you sure?', 'This book will be permanently deleted!', 'Yes, delete it!')"><i class="bi bi-trash"></i></button>
 
                                     <form id="delete-form-{{ $book->id }}" action="{{ route('books.destroy', $book->id) }}" method="POST" style="display: none;">
                                         @csrf

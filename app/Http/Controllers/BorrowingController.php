@@ -31,9 +31,16 @@ class BorrowingController extends Controller
             'name' => $request->name,
             'borrow_date' => $request->borrow_date,
         ]);
-
         
         foreach ($request->books as $book_id) {
+            // Kurangi stok buku
+            $book = Book::findOrFail($book_id);
+            if ($book->stock > 0) {
+                $book->decrement('stock'); // Kurangi stok buku
+            } else {
+                return back()->withErrors("The book {$book->title} is out of stock.");
+            }
+
             BorrowingDetail::create([
                 'borrowing_id' => $borrowing->id,
                 'book_id' => $book_id,
@@ -66,6 +73,14 @@ class BorrowingController extends Controller
             'books' => 'required|array',
             'books.*' => 'exists:book,id',
         ]);
+
+        // Kembalikan stok buku jika peminjaman sebelumnya sudah ada return_date
+        if ($borrowing->return_date === null && $request->return_date !== null) {
+            // Buku dikembalikan, tambah stok kembali
+            foreach ($borrowing->books as $book) {
+                $book->increment('stock'); // Kembalikan stok
+            }
+        }
         
         $borrowing->update([
             'name' => $request->name,
@@ -73,7 +88,27 @@ class BorrowingController extends Controller
             'return_date' => $request->return_date,
         ]);
 
+        // Ambil buku yang sedang dipinjam sebelumnya
+        $previousBooks = $borrowing->books->pluck('id')->toArray();
+
+        // Sync buku yang baru dipilih
         $borrowing->books()->sync($request->books);
+
+        // Ambil buku yang baru dipinjam setelah sync
+        $newBooks = $request->books;
+
+        // Hitung buku yang baru ditambahkan (untuk mengurangi stok)
+        $addedBooks = array_diff($newBooks, $previousBooks);
+
+        // Kurangi stok untuk buku yang baru dipinjam
+        foreach ($addedBooks as $book_id) {
+            $book = Book::findOrFail($book_id);
+            if ($book->stock > 0) {
+                $book->decrement('stock');
+            } else {
+                return back()->withErrors("The book {$book->title} is out of stock.");
+            }
+        }
 
         return redirect()->route('borrowings.index')->with('success', 'Borrowing updated successfully!');
     }
@@ -82,9 +117,9 @@ class BorrowingController extends Controller
     {
         try {
             $borrowing->delete();
-            return redirect()->route('borrowings.index')->with('success', 'Book deleted successfully!');
+            return redirect()->route('borrowings.index')->with('success', 'Borrowing deleted successfully!');
         } catch (\Exception $e) {
-            return redirect()->route('borrowings.index')->with('error', 'Failed to delete book!');
+            return redirect()->route('borrowings.index')->with('error', 'Failed to delete!');
         }
     }
 }
