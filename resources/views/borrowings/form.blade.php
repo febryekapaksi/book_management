@@ -1,15 +1,15 @@
 @extends('layout')
 
-@section('title', isset($book) ? 'Edit Borrowing' : 'Create Borrowing')
+@section('title', isset($borrowing) ? 'Edit Borrowing' : 'Create Borrowing')
 
 @section('content')
 <div class="pagetitle">
-    <h1>{{ isset($book) ? 'Edit Borrowing' : 'Create New Borrowing' }}</h1>
+    <h1>{{ isset($borrowing) ? 'Edit Borrowing' : 'Create New Borrowing' }}</h1>
     <nav>
         <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="{{ url('/') }}">Home</a></li>
             <li class="breadcrumb-item"><a href="{{ route('borrowings.index') }}">Borrowing</a></li>
-            <li class="breadcrumb-item active">{{ isset($book) ? 'Edit' : 'Create' }}</li>
+            <li class="breadcrumb-item active">{{ isset($borrowing) ? 'Edit' : 'Create' }}</li>
         </ol>
     </nav>
 </div><!-- End Page Title -->
@@ -19,7 +19,7 @@
         <div class="col-lg-8">
             <div class="card">
                 <div class="card-body">
-                    <h5 class="card-title">{{ isset($book) ? 'Edit Book' : 'Add New Book' }}</h5>
+                    <h5 class="card-title">{{ isset($borrowing) ? 'Edit Book' : 'Add New Book' }}</h5>
 
                     <!-- Validation Errors -->
                     @if ($errors->any())
@@ -32,8 +32,8 @@
                         </div>
                     @endif
 
-                    <!-- Form for creating or editing a book -->
-                    <form action="{{ isset($book) ? route('borrowings.update', $borrowing->id) : route('borrowings.store') }}" method="POST" enctype="multipart/form-data">
+                    
+                    <form action="{{ isset($borrowing) ? route('borrowings.update', $borrowing->id) : route('borrowings.store') }}" method="POST" enctype="multipart/form-data">
                         @csrf
                         @if(isset($book))
                             @method('PUT')
@@ -42,7 +42,7 @@
                         <div class="row mb-3">
                             <label for="name" class="col-md-4 col-form-label">Name</label>
                             <div class="col-md-8">
-                                <input type="text" class="form-control" id="name" name="name" value="{{ isset($borrow) ? $borrow->name : old('name') }}" required>
+                                <input type="text" class="form-control" id="name" name="name" value="{{ isset($borrowing) ? $borrowing->name : old('name') }}" required>
                             </div>
                         </div>
 
@@ -72,7 +72,7 @@
                                 <a href="{{ route('borrowings.index') }}" class="btn btn-secondary">Cancel</a>
                             </div>
                         </div>
-                    </form><!-- End Form for creating or editing a book -->
+                    </form>
 
                 </div>
             </div>

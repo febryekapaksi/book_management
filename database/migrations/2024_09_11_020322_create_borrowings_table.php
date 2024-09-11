@@ -13,9 +13,9 @@ return new class extends Migration
     {
         Schema::create('borrowing', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('user_id'); // Untuk referensi siapa yang meminjam
-            $table->date('borrow_date'); // Tanggal pinjam
-            $table->date('return_date')->nullable(); // Tanggal pengembalian
+            $table->unsignedBigInteger('user_id'); 
+            $table->date('borrow_date'); 
+            $table->date('return_date')->nullable(); 
             $table->timestamps();
     
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');

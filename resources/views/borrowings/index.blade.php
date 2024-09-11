@@ -23,7 +23,6 @@
 
                     <a href="{{ route('borrowings.create') }}" class="btn btn-sm btn-success"><i class="ri-add-circle-line"></i> Make a Borrowing</a>
 
-                    <!-- Table with stripped rows -->
                     <table class="table table-striped">
                         <thead>
                             <tr>
@@ -60,7 +59,6 @@
                             @endforeach
                         </tbody>
                     </table>
-                    <!-- End Table with stripped rows -->
                 </div>
             </div>
         </div>

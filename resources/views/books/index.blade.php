@@ -23,7 +23,6 @@
 
                     <a href="{{ route('books.create') }}" class="btn btn-sm btn-success"><i class="ri-add-circle-line"></i> Add Book</a>
 
-                    <!-- Table with stripped rows -->
                     <table class="table table-striped">
                         <thead>
                             <tr>
@@ -64,7 +63,6 @@
                             @endforeach
                         </tbody>
                     </table>
-                    <!-- End Table with stripped rows -->
                 </div>
             </div>
 

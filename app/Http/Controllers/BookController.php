@@ -28,7 +28,7 @@ class BookController extends Controller
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048', 
         ]);
 
-        // Cek apakah ada gambar yang diupload
+        // Cek ada gambar yang diupload
         $imageName = null;
         if ($request->hasFile('image')) {
             $imageName = time().'.'.$request->image->extension();
@@ -42,11 +42,9 @@ class BookController extends Controller
         try {
             Book::create($data);
             // Book::create($request->all());
-    
-            // Set session sukses
+
             return redirect()->route('books.index')->with('success', 'Book added successfully!');
         } catch (\Exception $e) {
-            // Jika terjadi kesalahan
             return redirect()->route('books.create')->with('error', 'Failed to add book!');
         }
     }
@@ -71,27 +69,22 @@ class BookController extends Controller
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048', 
         ]);
 
-        // Cek apakah ada gambar yang diupload
+        
         if ($request->hasFile('image')) {
-            // Hapus gambar lama jika ada
             if ($book->image && file_exists(public_path('images/'.$book->image))) {
                 unlink(public_path('images/'.$book->image));
             }
 
-            // Upload gambar baru
             $imageName = time().'.'.$request->image->extension();
             $request->image->move(public_path('images'), $imageName);
             $book->image = $imageName;
         }
     
         try {
-            // Update data buku
             $book->update($request->all());
     
-            // Set session sukses
             return redirect()->route('books.index')->with('success', 'Book updated successfully!');
         } catch (\Exception $e) {
-            // Jika terjadi kesalahan
             return redirect()->route('books.create')->with('error', 'Failed to update book!');
         }
     }
@@ -101,11 +94,8 @@ class BookController extends Controller
     {
         try {
             $book->delete();
-    
-            // Set session sukses
             return redirect()->route('books.index')->with('success', 'Book deleted successfully!');
         } catch (\Exception $e) {
-            // Jika terjadi kesalahan
             return redirect()->route('books.index')->with('error', 'Failed to delete book!');
         }
     }

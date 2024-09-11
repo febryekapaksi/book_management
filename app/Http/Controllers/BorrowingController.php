@@ -27,13 +27,12 @@ class BorrowingController extends Controller
 
         // dd($request->all());
 
-        // Simpan transaksi peminjaman
         $borrowing = Borrowing::create([
             'name' => $request->name,
             'borrow_date' => $request->borrow_date,
         ]);
 
-        // Simpan buku yang dipinjam ke tabel borrowing_details
+        
         foreach ($request->books as $book_id) {
             BorrowingDetail::create([
                 'borrowing_id' => $borrowing->id,

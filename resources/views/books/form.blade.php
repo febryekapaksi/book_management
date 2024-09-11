@@ -32,7 +32,6 @@
                         </div>
                     @endif
 
-                    <!-- Form for creating or editing a book -->
                     <form action="{{ isset($book) ? route('books.update', $book->id) : route('books.store') }}" method="POST" enctype="multipart/form-data">
                         @csrf
                         @if(isset($book))
@@ -80,7 +79,7 @@
                                 <a href="{{ route('books.index') }}" class="btn btn-secondary">Cancel</a>
                             </div>
                         </div>
-                    </form><!-- End Form for creating or editing a book -->
+                    </form>
 
                 </div>
             </div>
