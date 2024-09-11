@@ -30,6 +30,7 @@
                                 <th scope="col">User</th>
                                 <th scope="col">Borrow Date</th>
                                 <th scope="col">Books</th>
+                                <th scope="col">Status</th>
                                 <th scope="col">Actions</th>
                             </tr>
                         </thead>
@@ -38,13 +39,20 @@
                             <tr>
                                 <th scope="row">{{ $loop->iteration }}</th>
                                 <td>{{ $borrowing->name}}</td>
-                                <td>{{ $borrowing->borrow_date }}</td>
+                                <td>{{ date('d F Y', strtotime($borrowing->borrow_date)) }}</td>
                                 <td>
                                     <ul>
                                         @foreach($borrowing->books as $book)
                                             <li>{{ $book->title }}</li>
                                         @endforeach
                                     </ul>
+                                </td>
+                                <td>
+                                    @if(is_null($borrowing->return_date))
+                                        <span class="badge bg-warning">Borrowed</span>
+                                    @else
+                                        <span class="badge bg-success">Returned at {{date('d F Y', strtotime($borrowing->return_date))}}</span>
+                                    @endif
                                 </td>
                                 <td>
                                     <a href="{{ route('borrowings.edit', $borrowing->id) }}" class="btn btn-warning btn-sm">Edit</a>

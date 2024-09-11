@@ -50,10 +50,41 @@ class BorrowingController extends Controller
         return view('borrowings.index', compact('borrowings'));
     }
 
-    public function edit(Borrowing $borrowing)
+    public function edit($id)
     {
-        $books = Book::all();
-
+        $borrowing = Borrowing::with('books')->findOrFail($id); // Memuat borrowing beserta buku yang dipinjam
+        $books = Book::all(); // Ambil semua buku untuk ditampilkan di dropdown
         return view('borrowings.form', compact('borrowing', 'books'));
+    }
+
+    public function update(Request $request, Borrowing $borrowing)
+    {
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'borrow_date' => 'required|date',
+            'return_date' => 'nullable|date',
+            'books' => 'required|array',
+            'books.*' => 'exists:book,id',
+        ]);
+        
+        $borrowing->update([
+            'name' => $request->name,
+            'borrow_date' => $request->borrow_date,
+            'return_date' => $request->return_date,
+        ]);
+
+        $borrowing->books()->sync($request->books);
+
+        return redirect()->route('borrowings.index')->with('success', 'Borrowing updated successfully!');
+    }
+
+    public function destroy(Borrowing $borrowing)
+    {
+        try {
+            $borrowing->delete();
+            return redirect()->route('borrowings.index')->with('success', 'Book deleted successfully!');
+        } catch (\Exception $e) {
+            return redirect()->route('borrowings.index')->with('error', 'Failed to delete book!');
+        }
     }
 }

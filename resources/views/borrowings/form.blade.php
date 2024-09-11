@@ -35,7 +35,7 @@
                     
                     <form action="{{ isset($borrowing) ? route('borrowings.update', $borrowing->id) : route('borrowings.store') }}" method="POST" enctype="multipart/form-data">
                         @csrf
-                        @if(isset($book))
+                        @if(isset($borrowing))
                             @method('PUT')
                         @endif
                     
@@ -49,10 +49,12 @@
                         <div class="row mb-3">
                             <label for="books" class="col-md-4 col-form-label">Select Books</label>
                             <div class="col-md-8">
-                                <select class="form-select" id="books" name="books[]" multiple required>
-                                    <option value="" disabled selected>Choose Your Books</option>
+                                <select class="form-select" id="books" name="books[]" multiple>
                                     @foreach($books as $book)
-                                        <option value="{{ $book->id }}">{{ $book->title }}</option>
+                                        <option value="{{ $book->id }}" 
+                                            {{ isset($borrowing) && $borrowing->books->contains($book->id) ? 'selected' : '' }}>
+                                            {{ $book->title }}
+                                        </option>
                                     @endforeach
                                 </select>
                             </div>
@@ -64,6 +66,15 @@
                                 <input type="date" class="form-control" id="borrow_date" name="borrow_date" value="{{ isset($borrowing) ? $borrowing->borrow_date : old('borrow_date') }}" required>
                             </div>
                         </div>
+
+                        @if(isset($borrowing))
+                        <div class="row mb-3">
+                            <label for="return_date" class="col-md-4 col-form-label">Return Date</label>
+                            <div class="col-md-8">
+                                <input type="date" class="form-control" id="return_date" name="return_date" value="{{ isset($borrowing->return_date) ? $borrowing->return_date : old('return_date') }}" onchange="validateReturnDate()">
+                            </div>
+                        </div>
+                        @endif
 
                         <div class="row mb-3">
                             <div class="col-md-4"></div>
@@ -80,4 +91,23 @@
         </div>
     </div>
 </section>
+
+<script>
+    function validateReturnDate() {
+    var borrowDate = document.getElementById('borrow_date').value;
+    var returnDate = document.getElementById('return_date').value;
+
+    var borrowDateObj = new Date(borrowDate);
+    var returnDateObj = new Date(returnDate);
+
+    if (returnDate && returnDateObj < borrowDateObj) {
+        Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: 'The return date cannot be earlier than the borrow date!',
+        });
+        document.getElementById('return_date').value = ''; 
+    }
+    }
+</script>
 @endsection
