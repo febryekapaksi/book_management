@@ -50,4 +50,11 @@ class BorrowingController extends Controller
 
         return view('borrowings.index', compact('borrowings'));
     }
+
+    public function edit(Borrowing $borrowing)
+    {
+        $books = Book::all();
+
+        return view('borrowings.form', compact('borrowing', 'books'));
+    }
 }

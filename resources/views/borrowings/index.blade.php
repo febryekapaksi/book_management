@@ -31,6 +31,7 @@
                                 <th scope="col">User</th>
                                 <th scope="col">Borrow Date</th>
                                 <th scope="col">Books</th>
+                                <th scope="col">Actions</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -45,6 +46,15 @@
                                             <li>{{ $book->title }}</li>
                                         @endforeach
                                     </ul>
+                                </td>
+                                <td>
+                                    <a href="{{ route('borrowings.edit', $borrowing->id) }}" class="btn btn-warning btn-sm">Edit</a>
+                                    <button class="btn btn-danger btn-sm" onclick="confirmationDialog('delete-form-{{ $borrowing->id }}', 'Are you sure?', 'This book will be permanently deleted!', 'Yes, delete it!')">Delete</button>
+
+                                    <form id="delete-form-{{ $borrowing->id }}" action="{{ route('borrowings.destroy', $borrowing->id) }}" method="POST" style="display: none;">
+                                        @csrf
+                                        @method('DELETE')
+                                    </form>
                                 </td>
                             </tr>
                             @endforeach
