@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ProfileUpdateRequest;
+use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -16,7 +17,7 @@ class ProfileController extends Controller
      */
     public function edit(Request $request): View
     {
-        return view('profile.edit', [
+        return view('profile.index', [
             'user' => $request->user(),
         ]);
     }
@@ -24,19 +25,33 @@ class ProfileController extends Controller
     /**
      * Update the user's profile information.
      */
-    public function update(ProfileUpdateRequest $request): RedirectResponse
+    public function update(Request $request, User $user)
     {
-        $request->user()->fill($request->validated());
+        $request->validate([
+            'name' => 'required|string|max:50',
+            'email' => 'required|email',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+        ]);
 
-        if ($request->user()->isDirty('email')) {
-            $request->user()->email_verified_at = null;
+
+        if ($request->hasFile('image')) {
+            if ($user->image && file_exists(public_path('images/' . $user->image))) {
+                unlink(public_path('images/' . $user->image));
+            }
+
+            $imageName = time() . '.' . $request->image->extension();
+            $request->image->move(public_path('images'), $imageName);
+            $user->image = $imageName;
         }
 
-        $request->user()->save();
+        try {
+            $user->update($request->all());
 
-        return Redirect::route('profile.edit')->with('status', 'profile-updated');
+            return redirect()->route('profile.edit')->with('success', 'Profile updated successfully!');
+        } catch (\Exception $e) {
+            return redirect()->route('profile.edit')->with('error', 'Failed to update Profile!');
+        }
     }
-
     /**
      * Delete the user's account.
      */

@@ -2,12 +2,12 @@
     <ul class="sidebar-nav" id="sidebar-nav">
 
         <li class="nav-item">
-            <a class="nav-link {{ Request::is('dashboard*') ? '' : 'collapsed' }}" href="{{ route('dashboard') }}">
+            <a class="nav-link {{ Request::is('dashboard*') || Request::is('/*') ? '' : 'collapsed' }}"
+                href="{{ route('dashboard') }}">
                 <i class="bi bi-grid"></i>
                 <span>Dashboard</span>
             </a>
         </li>
-
 
         <li class="nav-item">
             <a class="nav-link {{ Request::is('books*') ? '' : 'collapsed' }}" href="{{ route('books.index') }}">
