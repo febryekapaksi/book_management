@@ -26,14 +26,14 @@ class BookController extends Controller
             'publisher' => 'required',
             'published_date' => 'required|date',
             'stock' => 'required|integer',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048', 
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
 
         // Cek ada gambar yang diupload
         $imageName = null;
         if ($request->hasFile('image')) {
-            $imageName = time().'.'.$request->image->extension();
-            $request->image->move(public_path('images'), $imageName); 
+            $imageName = time() . '.' . $request->image->extension();
+            $request->image->move(public_path('images'), $imageName);
         }
 
         $data = $request->all();
@@ -68,23 +68,23 @@ class BookController extends Controller
             'publisher' => 'required|string|max:50',
             'published_date' => 'required|date',
             'stock' => 'required|integer',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048', 
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
 
-        
+
         if ($request->hasFile('image')) {
-            if ($book->image && file_exists(public_path('images/'.$book->image))) {
-                unlink(public_path('images/'.$book->image));
+            if ($book->image && file_exists(public_path('images/' . $book->image))) {
+                unlink(public_path('images/' . $book->image));
             }
 
-            $imageName = time().'.'.$request->image->extension();
+            $imageName = time() . '.' . $request->image->extension();
             $request->image->move(public_path('images'), $imageName);
             $book->image = $imageName;
         }
-    
+
         try {
             $book->update($request->all());
-    
+
             return redirect()->route('books.index')->with('success', 'Book updated successfully!');
         } catch (\Exception $e) {
             return redirect()->route('books.create')->with('error', 'Failed to update book!');

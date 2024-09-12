@@ -31,7 +31,7 @@ class BorrowingController extends Controller
             'name' => $request->name,
             'borrow_date' => $request->borrow_date,
         ]);
-        
+
         foreach ($request->books as $book_id) {
             // Kurangi stok buku
             $book = Book::findOrFail($book_id);
@@ -81,7 +81,7 @@ class BorrowingController extends Controller
                 $book->increment('stock'); // Kembalikan stok
             }
         }
-        
+
         $borrowing->update([
             'name' => $request->name,
             'borrow_date' => $request->borrow_date,
